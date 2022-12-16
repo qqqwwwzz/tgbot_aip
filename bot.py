@@ -34,7 +34,6 @@ def start_command(message):
         reply_markup=markup
     )
 
-
 @bot.message_handler(commands=['help'])
 def help_command(message):
     """
