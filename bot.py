@@ -155,5 +155,6 @@ def drinking(message):
     drinked+=d
     d=0
 
+    
 bot.polling(none_stop=True)
 """Фукнция, чтобы бот постоянно спрашивал сервера Telegram на наличие новых сообщений"""
