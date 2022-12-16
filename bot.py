@@ -110,7 +110,8 @@ def calc(message):
             markup.add(btn1)
             bot.send_message(
                 message.from_user.id,
-                'Вы весите '+ str(weigh)+' киллограмм. Ваша дневная норма '+ str(calculation(weigh)) +' миллитров воды.\n'+
+                'Вы весите '+ str(weigh)+' киллограмм.\n' +
+                'Ваша дневная норма '+ str(calculation(weigh)) +' миллитров воды.\n'+
                 'Для того чтобы следить за количеством выпитой воды напишите команду /drink или нажмите на кнопку снизу',
                 reply_markup=markup
             )
