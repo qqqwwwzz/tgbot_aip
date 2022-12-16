@@ -8,6 +8,9 @@ norma=0
 drinked=0
 d=0
 
+def calculation(x):
+    return 1500+(x-20)*20
+
 
 @bot.message_handler(commands=['start'])
 def start_command(message):
@@ -93,7 +96,14 @@ def calc(message):
         try:
             weigh = int(message.text)
         except Exception:
-            bot.send_message(message.from_user.id, 'Цифрами, пожалуйста')
+            markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
+            btn1 = telebot.types.KeyboardButton("/calculate")
+            markup.add(btn1)
+            bot.send_message(
+                message.from_user.id,
+                'Цифрами, пожалуйста',
+                reply_markup=markup,
+            )
             break
         else:
             markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -101,11 +111,11 @@ def calc(message):
             markup.add(btn1)
             bot.send_message(
                 message.from_user.id,
-                'Вы весите '+ str(weigh)+' Киллограмм. Ваша дневная норма '+ str(1500+(weigh-20)*20) +' миллитров воды.\n'+
+                'Вы весите '+ str(weigh)+' киллограмм. Ваша дневная норма '+ str(calculation(weigh)) +' миллитров воды.\n'+
                 'Для того чтобы следить за количеством выпитой воды напишите команду /drink или нажмите на кнопку снизу',
                 reply_markup=markup
             )
-    norma=1500+(weigh-20)*20
+    norma=calculation(weigh)
     weigh=0
 
 
@@ -117,24 +127,34 @@ def drinking(message):
     try:
         d = int(message.text)
     except Exception:
-        bot.send_message(message.from_user.id, 'Цифрами, пожалуйста')
+        markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
+        btn1 = telebot.types.KeyboardButton("/drink")
+        markup.add(btn1)
+        bot.send_message(message.from_user.id, 'Цифрами, пожалуйста',reply_markup=markup)
     else:
         if norma-(drinked+d)>0:
+            markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
+            btn1 = telebot.types.KeyboardButton("drink")
+            markup.add(btn1)
             bot.send_message(
                 message.from_user.id,
                 'Вы выпили '+str(d)+' миллитров воды.\n'+
-                'Осталось выпить '+str(norma-(drinked+d))
+                'Осталось выпить '+str(norma-(drinked+d)),
+                reply_markup=markup
             )
         else:
+            markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
+            btn1 = telebot.types.KeyboardButton("calculate")
+            markup.add(btn1)
             bot.send_message(
                 message.from_user.id,
                 'За сегодня вы выпили на '+str(abs(norma-(drinked+d)))+' миллитров воды больше нормы.\n'+
                 'Превышение нормы может навредить вашему организму.\n'+
-                'Если наступил другой день, снова напишите комманду /calculate'
+                'Нажмите кнопочку calculate, если наступил следующий день.',
+                reply_markup=markup
             )
     drinked+=d
     d=0
-
 
 bot.polling(none_stop=True)
 """Фукнция, чтобы бот постоянно спрашивал сервера Telegram на наличие новых сообщений"""
