@@ -34,6 +34,7 @@ def start_command(message):
         reply_markup=markup
     )
 
+
 @bot.message_handler(commands=['help'])
 def help_command(message):
     """
@@ -110,7 +111,7 @@ def calc(message):
             markup.add(btn1)
             bot.send_message(
                 message.from_user.id,
-                'Вы весите '+ str(weigh)+' киллограмм.\n' +
+                'Вы весите '+ str(weigh)+' киллограмм.\n'+
                 'Ваша дневная норма '+ str(calculation(weigh)) +' миллитров воды.\n'+
                 'Для того чтобы следить за количеством выпитой воды напишите команду /drink или нажмите на кнопку снизу',
                 reply_markup=markup
@@ -156,6 +157,5 @@ def drinking(message):
     drinked+=d
     d=0
 
-    
 bot.polling(none_stop=True)
 """Фукнция, чтобы бот постоянно спрашивал сервера Telegram на наличие новых сообщений"""
